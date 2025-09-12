@@ -31,7 +31,6 @@ app.post("/send-sms", async (req, res) => {
   const { to, message } = req.body;
 
   try {
-    // Dummy check (skip Twilio call if creds are fake)
     if (accountSid.startsWith("ACxxxx")) {
       console.log("Dummy SMS payload:", { to, from: twilioNumber, message });
       return res.json({ success: true, dummy: true });
@@ -73,7 +72,15 @@ app.post("/signup", async (req, res) => {
   const { fullName, country, phone, email, password } = req.body;
 
   try {
-    const customerId = "UID - " + Math.floor(100000 + Math.random() * 900000);
+    const generateRandomCustomerId = () => {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let id = "#";
+      for (let i = 0; i < 10; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return id;
+    };
+    const customerId = generateRandomCustomerId();
 
     const msg = {
       to: email,
@@ -116,19 +123,19 @@ app.post("/signup", async (req, res) => {
             <tr>
               <td style="background:#3d320f; border-radius:8px; padding:16px;">
                 <p style="margin:0; font-size:14px; font-weight:600; color:#f5f5fa;">Your Balance to Complete Setup:</p>
-                <h2 style="margin:8px 0 0; font-size:28px; font-weight:800; color:#ffd84d;">$449.25</h2>
+                <h2 style="margin:8px 0 0; font-size:28px; font-weight:800; color:#ffd84d;">$567.75</h2>
               </td>
             </tr>
           </table>
 
-          <p style="margin:0; font-size:14px; color:#bbb;">Original Price: $599 | You Save: $149.75</p>
+          <p style="margin:0; font-size:14px; color:#bbb;">Original Price: $646.75 | You Save: $248.75</p>
         </td>
       </tr>
     </table>
 
     <!-- Launch Date Section -->
     <div style="background: linear-gradient(90deg, #ff6b6b, #ff9f43); border-radius: 12px; padding: 20px; margin: 20px 0;">
-      <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #fff;">Launch Date: December 31st</h4>
+      <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #fff;">Launch Date: September 28th</h4>
       <p style="margin: 8px 0 0; font-size: 14px; color: #fff;">Your UID is critical for launch day access</p>
     </div>
 
@@ -177,7 +184,7 @@ app.post("/signup", async (req, res) => {
       <div style="background:#1b1822; border-radius:12px; padding:16px; border:1px solid rgba(162,113,255,0.2);">
         <p style="margin:0; font-size:14px; color:#f5f5fa;">
           <strong style="color:#a271ff;">5 YOUR MIND YOUR CREATION</strong><br>
-          Portal setup complete! Your automated business system will be ready for launch on December 31st.
+          Portal setup complete! Your automated business system will be ready for launch on September 28th.
         </p>
       </div>
     </div>
