@@ -233,7 +233,7 @@ app.post("/signup", async (req, res) => {
 
     await sgMail.send(msg);
 
-    res.json({ success: true, uid });
+    res.json({ success: true, UID });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
