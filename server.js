@@ -69,18 +69,10 @@ app.post("/subscribe", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const { fullName, country, phone, email, password } = req.body;
+  const { fullName, country, phone, email, password, UID } = req.body;
 
   try {
-    const generateRandomCustomerId = () => {
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let id = "#";
-      for (let i = 0; i < 10; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-    };
-    const customerId = generateRandomCustomerId();
+    
 
     const msg = {
       to: email,
@@ -149,7 +141,7 @@ app.post("/signup", async (req, res) => {
           <strong style="color:#a271ff;">1 Access Your Portal</strong><br>
           Go to your personalized portal and enter your unique ID: 
           <span style="background:#2e2a3d; color:#fff; padding:4px 8px; border-radius:6px; font-size:13px; font-weight:600; display:inline-block; margin-top:4px;">
-            ${customerId}
+            ${UID}
           </span>
         </p>
       </div>
@@ -228,7 +220,7 @@ app.post("/signup", async (req, res) => {
     </p>
 
     <p style="margin: 16px 0 0; font-size: 13px; color: #a271ff; font-weight:600;">
-      ${customerId} | Launch: September 28st
+      ${UID} | Launch: September 28st
     </p>
   </div>
 
@@ -241,7 +233,7 @@ app.post("/signup", async (req, res) => {
 
     await sgMail.send(msg);
 
-    res.json({ success: true, customerId });
+    res.json({ success: true, uid });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
