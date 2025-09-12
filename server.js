@@ -6,6 +6,29 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import cors from "cors";
+
+const allowedOrigins = [
+  "https://phillipfokas-frontend.vercel.app", // your frontend on Vercel
+  "http://localhost:3000", // for local testing
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.options("*", cors()); 
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,8 +95,6 @@ app.post("/signup", async (req, res) => {
   const { fullName, country, phone, email, password, UID } = req.body;
 
   try {
-    
-
     const msg = {
       to: email,
       from: process.env.FROM_EMAIL,
@@ -259,7 +280,7 @@ app.post("/create-checkout-session", async (req, res) => {
         },
       ],
       success_url: "https://phillipfokas-frontend.vercel.app/success",
-      cancel_url: "https://phillipfokas-frontend.vercel.app/cancel", 
+      cancel_url: "https://phillipfokas-frontend.vercel.app/cancel",
     });
 
     res.json({ id: session.id });
